@@ -235,16 +235,55 @@ def player_stats(players_name):
             return all_players[n]
     pass     
 
+# def average_rebounds_by_shoe_brand():
+#     zeros = '.2f'
+#     brand = []
+#     for n in range(len(all_players)):
+#         brand.append(all_players[n]["shoe_brand"])
+#     brands = (list(set(brand)))
+#     for brand in brands:
+#         avg = []
+#         for n in range(len(all_players)):
+#             if brand == all_players[n]["shoe_brand"]:
+#                 avg.append(all_players[n]["rebounds_per_game"])
+#         avg_by_shoe = (f'{brand}: {format((sum(avg)/len(avg)),zeros)}')
+#         print (avg_by_shoe)
+
+
+
+def get_all_players():
+  all_players = {}
+  for team in ['home', 'away']:
+    for player in game_dict()[team]['players']:
+      all_players.update(
+        {player['name']: {
+          "name": player["name"],
+          "number": player["number"],
+          "position": player["position"],
+          "points_per_game": player["points_per_game"],
+          "rebounds_per_game": player["rebounds_per_game"],
+          "assists_per_game": player["assists_per_game"],
+          "steals_per_game": player["steals_per_game"],
+          "blocks_per_game": player["blocks_per_game"],
+          "career_points": player["career_points"],
+          "age": player["age"],
+          "height_inches": player["height_inches"],
+          "shoe_brand": player["shoe_brand"]
+          }
+        }
+      )
+  return all_players
+
 def average_rebounds_by_shoe_brand():
-    zeros = '.2f'
-    brand = []
-    for n in range(len(all_players)):
-        brand.append(all_players[n]["shoe_brand"])
-    brands = (list(set(brand)))
-    for brand in brands:
-        avg = []
-        for n in range(len(all_players)):
-            if brand == all_players[n]["shoe_brand"]:
-                avg.append(all_players[n]["rebounds_per_game"])
-        avg_by_shoe = (f'{brand}: {format((sum(avg)/len(avg)),zeros)}')
-        print (avg_by_shoe)
+  shoe_dict = {}
+  players = get_all_players()
+  for player in players:
+    brand = players[player]["shoe_brand"]
+    rebounds = players[player]["rebounds_per_game"]
+    if (brand in shoe_dict):
+      shoe_dict[brand].append(rebounds)
+    else:
+      shoe_dict[brand] = [rebounds]
+  for brand in shoe_dict:
+    avg = sum(shoe_dict[brand]) / len(shoe_dict[brand])
+    print(f'{brand}: ', "{0:.2f}".format(avg))
