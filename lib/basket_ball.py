@@ -182,3 +182,69 @@ def game_dict():
             ]
         }
     }
+
+home = game_dict()["home"]
+home_players = home["players"]
+away = game_dict()["away"]
+away_players = away["players"]
+all_players = home_players + away_players
+
+def num_points_per_game(players_name):
+    for n in range(len(all_players)):
+        if players_name == all_players[n]["name"]:
+            return all_players[n]["points_per_game"]
+    pass
+
+def player_age(players_name):
+    for n in range(len(all_players)):
+        if players_name == all_players[n]["name"]:
+            return all_players[n]["age"]
+    pass
+
+def team_colors(team_name):
+    if team_name == home["team_name"]:
+        return home["colors"]
+    elif team_name == away["team_name"]:
+        return away["colors"]
+    else:
+        return "No such team in this database"
+    pass
+
+def team_names():
+    return [home["team_name"], away["team_name"]]
+    pass
+
+def player_numbers(team_name):
+    if team_name == home["team_name"]:
+        home_numbers = []
+        for n in range(len(home["players"])):
+            home_numbers.append(home["players"][n]["number"])
+        return home_numbers
+    elif team_name == away["team_name"]:
+        away_numbers =[]
+        for n in range(len(away["players"])):
+            away_numbers.append(away["players"][n]["number"])
+        return away_numbers
+    else:
+        return "No such team in this database"
+    pass
+
+def player_stats(players_name):
+    for n in range(len(all_players)):
+        if players_name == all_players[n]["name"]:
+            return all_players[n]
+    pass     
+
+def average_rebounds_by_shoe_brand():
+    zeros = '.2f'
+    brand = []
+    for n in range(len(all_players)):
+        brand.append(all_players[n]["shoe_brand"])
+    brands = (list(set(brand)))
+    for brand in brands:
+        avg = []
+        for n in range(len(all_players)):
+            if brand == all_players[n]["shoe_brand"]:
+                avg.append(all_players[n]["rebounds_per_game"])
+        avg_by_shoe = (f'{brand}: {format((sum(avg)/len(avg)),zeros)}')
+        print (avg_by_shoe)
